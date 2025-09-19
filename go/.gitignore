@@ -1,0 +1,46 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Go workspace file
+go.work
+
+# Dependency directories (if not using modules)
+vendor/
+
+# Air live reload tool
+tmp/
+.air.toml.bak
+
+# Go module cache (optional - usually not ignored)
+# go.sum
+
+# Binary output directory
+bin/
+dist/
+
+# Delve debugger
+__debug_bin
+
+# IDE specific files for Go
+.vscode/launch.json
+
+# Compiled Object files
+*.o
+*.a
+
+# Profiling data
+*.prof
+*.pprof
+
+# Local environment variables specific to Go
+.env.go
