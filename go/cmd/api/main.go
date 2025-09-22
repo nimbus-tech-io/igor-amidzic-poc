@@ -12,7 +12,10 @@ import (
 func main() {
 	ctx := context.Background()
 	
-	repo := provider.NewAppProvider().Repository()
+	appProvider := provider.NewAppProvider()
+	repo := appProvider.Repository()
+	s3Client := appProvider.S3Client()
+	sqsClient := appProvider.SQSClient()
 	
 	dsn := os.Getenv("POSTGRES_DSN")
 	if dsn == "" {
@@ -24,8 +27,9 @@ func main() {
 	}
 	defer repo.Close()
 	
-	r := web.NewRouter(repo)
+	r := web.NewRouter(repo, s3Client, sqsClient)
 	
 	log.Println("Server starting on :8080")
+	log.Println("LocalStack S3 endpoint: http://localhost:4566")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
