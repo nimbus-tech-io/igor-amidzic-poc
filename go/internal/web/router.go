@@ -1,14 +1,19 @@
 package web
 
 import (
+	"goapp/internal/repo"
 	"goapp/internal/web/handlers"
 
 	"github.com/gorilla/mux"
 )
 
-func NewRouter() *mux.Router {
+func NewRouter(repository repo.Repository) *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/register", handlers.Register).Methods("POST")
-	r.HandleFunc("/login", handlers.Login).Methods("POST")
+	
+	handler := handlers.NewHandler(repository)
+	
+	r.HandleFunc("/register", handler.Register).Methods("POST")
+	r.HandleFunc("/login", handler.Login).Methods("POST")
+	
 	return r
 }
