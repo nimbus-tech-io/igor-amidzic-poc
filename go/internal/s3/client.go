@@ -5,6 +5,8 @@ import (
 	"io"
 	"time"
 
+	"goapp/internal/config"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -17,22 +19,23 @@ type S3Client struct {
 }
 
 func NewS3Client() (*S3Client, error) {
+	cfg := config.LoadConfig()
+	
 	sess, err := session.NewSession(&aws.Config{
-		Region:           aws.String("eu-central-1"),
-		Endpoint:         aws.String("http://localhost:4566"),
-		S3ForcePathStyle: aws.Bool(true),
-		Credentials:      credentials.NewStaticCredentials("test", "test", ""),
+		Region:           aws.String(cfg.AWS.Region),
+		Endpoint:         aws.String(cfg.AWS.Endpoint),
+		S3ForcePathStyle: aws.Bool(cfg.S3.ForcePathStyle),
+		Credentials:      credentials.NewStaticCredentials(cfg.AWS.Credentials.AccessKey, cfg.AWS.Credentials.SecretKey, ""),
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create AWS session: %v", err)
 	}
 
 	client := s3.New(sess)
-	bucketName := "nimbus-files" 
 
 	return &S3Client{
 		client: client,
-		bucket: bucketName,
+		bucket: cfg.S3.BucketName,
 	}, nil
 }
 

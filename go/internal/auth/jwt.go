@@ -4,14 +4,20 @@ import (
 	"errors"
 	"time"
 
+	"goapp/internal/config"
+
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var (
-	jwtSecretKey = []byte("super-secret-key") 
 	ErrInvalidToken = errors.New("invalid token")
 	ErrExpiredToken = errors.New("token has expired")
 )
+
+func getJWTSecret() []byte {
+	cfg := config.LoadConfig()
+	return []byte(cfg.JWT.Secret)
+}
 
 type JWTClaims struct {
 	UserID string `json:"user_id"`
@@ -33,7 +39,7 @@ func GenerateJWT(userID, email string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString(jwtSecretKey)
+	tokenString, err := token.SignedString(getJWTSecret())
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +52,7 @@ func ValidateJWT(tokenString string) (*JWTClaims, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
-		return jwtSecretKey, nil
+		return getJWTSecret(), nil
 	})
 
 	if err != nil {
