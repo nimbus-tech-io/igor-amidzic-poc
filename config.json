@@ -1,0 +1,38 @@
+{
+  "aws": {
+    "region": "eu-central-1",
+    "endpoint": "http://localhost:4566",
+    "credentials": {
+      "access_key": "test",
+      "secret_key": "test"
+    }
+  },
+  "s3": {
+    "bucket_name": "nimbus-files",
+    "force_path_style": true
+  },
+  "sqs": {
+    "queue_name": "nimbus-queue"
+  },
+  "database": {
+    "postgres_dsn": "${POSTGRES_DSN}"
+  },
+  "jwt": {
+    "secret": "${JWT_SECRET:your-super-secret-jwt-key-change-in-production}"
+  },
+  "servers": {
+    "go_api": {
+      "port": ":8080",
+      "name": "Go API Server"
+    },
+    "python_api": {
+      "port": ":8081", 
+      "name": "Python API Server"
+    },
+    "react_app": {
+      "port": ":3000",
+      "name": "React Frontend"
+    }
+  },
+  "environment": "development"
+}
