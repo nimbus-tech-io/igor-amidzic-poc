@@ -52,6 +52,7 @@ class Config:
         """AWS endpoint for LocalStack or custom endpoint."""
         return self._config_data.get("aws", {}).get("endpoint")
     
+    # SQS Configuration
     @property
     def SQS_QUEUE_NAME(self) -> Optional[str]:
         return self._config_data.get("sqs", {}).get("queue_name")
@@ -63,6 +64,15 @@ class Config:
         if not queue_name:
             return None            
         return f"{self.AWS_ENDPOINT}/000000000000/{queue_name}"
+    
+    # S3 Configuration
+    @property
+    def S3_BUCKET_NAME(self) -> Optional[str]:
+        return self._config_data.get("s3", {}).get("bucket_name")
+    
+    @property
+    def S3_FORCE_PATH_STYLE(self) -> bool:
+        return self._config_data.get("s3", {}).get("force_path_style", False)
             
     @property
     def HOST(self) -> str:

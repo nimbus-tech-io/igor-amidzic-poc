@@ -2,27 +2,27 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api.routes import router
-from app.services.sqs_worker import sqs_worker
+from app.services.worker import worker
 from app.core.config import config
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan manager for FastAPI app - handles startup and shutdown."""
-    print("Starting Py application...")
+    print("🚀 Starting Py application...")
     
-    worker_task = asyncio.create_task(sqs_worker.start())
+    worker_task = asyncio.create_task(worker.start())
     
     yield
     
     print("🛑 Shutting down Py application...")
-    sqs_worker.stop()
+    worker.stop()
     worker_task.cancel()
     
     try:
         await worker_task
     except asyncio.CancelledError:
-        print("✅ SQS Worker stopped successfully")
+        print("✅ Worker stopped successfully")
 
 
 def create_app() -> FastAPI:
