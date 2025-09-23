@@ -73,6 +73,22 @@ class Config:
     @property
     def S3_FORCE_PATH_STYLE(self) -> bool:
         return self._config_data.get("s3", {}).get("force_path_style", False)
+    
+    # OpenRouter Configuration
+    @property
+    def OPENROUTER_API_KEY(self) -> Optional[str]:
+        api_key = self._config_data.get("openrouter", {}).get("api_key")
+        if api_key:
+            return self._resolve_env_var(api_key)
+        return None
+    
+    @property
+    def OPENROUTER_MODEL(self) -> str:
+        return self._config_data.get("openrouter", {}).get("model", "x-ai/grok-4-fast:free")
+    
+    @property
+    def OPENROUTER_BASE_URL(self) -> str:
+        return "https://openrouter.ai/api/v1"
             
     @property
     def HOST(self) -> str:

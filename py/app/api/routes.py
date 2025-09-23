@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.services.worker import worker
+from app.worker.worker import worker
 from app.core.config import config
 
 router = APIRouter()
@@ -34,6 +34,8 @@ async def worker_status():
         "queue_url": config.SQS_QUEUE_URL,
         "queue_name": config.SQS_QUEUE_NAME,
         "s3_bucket": config.S3_BUCKET_NAME,
+        "openrouter_model": config.OPENROUTER_MODEL,
+        "openrouter_configured": bool(config.OPENROUTER_API_KEY),
         "aws_configured": config.validate_aws_config(),
         "aws_region": config.AWS_REGION,
         "aws_endpoint": config.AWS_ENDPOINT,

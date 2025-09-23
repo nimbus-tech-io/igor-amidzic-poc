@@ -2,17 +2,17 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from app.api.routes import router
-from app.services.worker import worker
+from app.worker.worker import worker
 from app.core.config import config
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan manager for FastAPI app - handles startup and shutdown."""
-    print("🚀 Starting Py application...")
     
     worker_task = asyncio.create_task(worker.start())
-    
+    print("✅ Worker task created")
+        
     yield
     
     print("🛑 Shutting down Py application...")

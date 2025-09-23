@@ -14,6 +14,10 @@
   "sqs": {
     "queue_name": "nimbus-queue"
   },
+  "openrouter": {
+    "api_key": "${OPENROUTER_API_KEY}",
+    "model": "x-ai/grok-4-fast:free"
+  },
   "database": {
     "postgres_dsn": "${POSTGRES_DSN}"
   },
